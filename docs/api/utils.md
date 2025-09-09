@@ -1,52 +1,26 @@
 
 # Utilities
 
-`utils` can be replaced by `ul`, e.g., `Concord.utils.list_adata_files` can be `Concord.ul.list_adata_files`
+`utils` can be replaced by `ul`, e.g., `concord.utils.list_adata_files` can be `concord.ul.list_adata_files`
 
-::: Concord.utils.benchmark_topology
+::: concord.utils.select_features
 
-::: Concord.utils.compute_persistent_homology
+::: concord.utils.generate_synthetic_doublets
 
-::: Concord.utils.compute_betti_median_or_mode
+::: concord.utils.list_adata_files
 
-::: Concord.utils.compute_betti_entropy
+::: concord.utils.read_and_concatenate_adata
 
-::: Concord.utils.interpolate_betti_curve
+::: concord.utils.filter_and_copy_attributes
 
-::: Concord.utils.compute_betti_statistics
+::: concord.utils.ensure_categorical
 
-::: Concord.utils.summarize_betti_statistics
+::: concord.utils.save_obsm_to_hdf5
 
-::: Concord.utils.benchmark_geometry
+::: concord.utils.load_obsm_from_hdf5
 
-::: Concord.utils.pairwise_distance
+::: concord.utils.subset_adata_to_obsm_indices
 
-::: Concord.utils.local_vs_distal_corr
+::: concord.utils.anndata_to_viscello
 
-::: Concord.utils.compute_state_batch_distance_ratio
-
-::: Concord.utils.compute_trustworthiness
-
-::: Concord.utils.Simulation
-
-::: Concord.utils.select_features
-
-::: Concord.utils.generate_synthetic_doublets
-
-::: Concord.utils.list_adata_files
-
-::: Concord.utils.read_and_concatenate_adata
-
-::: Concord.utils.filter_and_copy_attributes
-
-::: Concord.utils.ensure_categorical
-
-::: Concord.utils.save_obsm_to_hdf5
-
-::: Concord.utils.load_obsm_from_hdf5
-
-::: Concord.utils.subset_adata_to_obsm_indices
-
-::: Concord.utils.anndata_to_viscello
-
-::: Concord.utils.update_clist_with_subsets
+::: concord.utils.update_clist_with_subsets

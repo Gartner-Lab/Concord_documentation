@@ -1,19 +1,52 @@
 # 3D CONCORD UMAP of *C. elegans* and *C. briggsae* Embryogenesis
 
-* Data from [Large, Christopher RL, et al. "Lineage-resolved analysis of embryonic gene expression evolution in C. elegans and C. briggsae." bioRxiv (2024): 2024-02](https://www.biorxiv.org/content/10.1101/2024.02.03.578695v1.abstract), visualized with 3D UMAP with CONCORD latent.
+* Data from [Large, Christopher RL, et al., 2025](https://doi.org/10.1126/science.adu8249), combined with our collection of early *C. elegans* embryos, visualized with 3D UMAP with CONCORD latent (*hcl* or *kNN* mode). Click the image to view interactive plots.
 
-=== "Embryo Time"
-    <iframe src="/galleries/cbce/cbce_embryotime.html" width="100%" height="2000px" style="border:none; display:block; margin:0 auto;"></iframe>
+=== "Embryo time (*hcl*)"
+    <a href="../cbce/cbce_hcl_embryotime.html" target="_blank">⬇️ Download Interactive HTML</a>
+    <a href="../cbce/cbce_hcl_embryotime.html" target="_blank">
+        <img src="../cbce/cbce_hcl_embryotime.png" alt="Embryo Time (hcl)">
+    </a>  
 
-=== "Cell Class"
-    <iframe src="/galleries/cbce/cbce_broad.html" width="100%" height="2000px" style="border:none; display:block; margin:0 auto;"></iframe>
+=== "Cell class (*hcl*)"
+    <a href="../cbce/cbce_hcl_broad.html" target="_blank">⬇️ Download Interactive HTML</a>
+    <a href="../cbce/cbce_hcl_broad.html" target="_blank">
+        <img src="../cbce/cbce_hcl_broad.png" alt="Cell Class (hcl)">
+    </a>  
 
-=== "Cell Type"
-    <iframe src="/galleries/cbce/cbce_celltype.html" width="100%" height="2000px" style="border:none; display:block; margin:0 auto;"></iframe>
+=== "Cell type and lineage (*hcl*)"
+    <a href="../cbce/cbce_hcl_ct_or_lin.html" target="_blank">⬇️ Download Interactive HTML</a>
+    <a href="../cbce/cbce_hcl_ct_or_lin.html" target="_blank">
+        <img src="../cbce/cbce_hcl_ct_or_lin.png" alt="Cell Type / Lineage (hcl)">
+    </a>  
 
-=== "Lineage"
-    <iframe src="/galleries/cbce/cbce_lineage.html" width="100%" height="2000px" style="border:none; display:block; margin:0 auto;"></iframe>
+=== "Species (*hcl*)"
+    <a href="../cbce/cbce_hcl_species.html" target="_blank">⬇️ Download Interactive HTML</a>
+    <a href="../cbce/cbce_hcl_species.html" target="_blank">
+        <img src="../cbce/cbce_hcl_species.png" alt="Species (hcl)">
+    </a>  
 
-=== "Species"
-    <iframe src="/galleries/cbce/cbce_species.html" width="100%" height="2000px" style="border:none; display:block; margin:0 auto;"></iframe>
+=== "Embryo time (*kNN*)"
+    <a href="../cbce/cbce_knn_embryotime.html" target="_blank">⬇️ Download Interactive HTML</a>
+    <a href="../cbce/cbce_knn_embryotime.html" target="_blank">
+        <img src="../cbce/cbce_knn_embryotime.png" alt="Embryo Time (kNN)">
+    </a>  
+
+=== "Cell class (*kNN*)"
+    <a href="../cbce/cbce_knn_broad.html" target="_blank">⬇️ Download Interactive HTML</a>
+    <a href="../cbce/cbce_knn_broad.html" target="_blank">
+        <img src="../cbce/cbce_knn_broad.png" alt="Cell Class (kNN)">
+    </a>  
+
+=== "Cell type and lineage (*kNN*)"
+    <a href="../cbce/cbce_knn_ct_or_lin.html" target="_blank">⬇️ Download Interactive HTML</a>
+    <a href="../cbce/cbce_knn_ct_or_lin.html" target="_blank">
+        <img src="../cbce/cbce_knn_ct_or_lin.png" alt="Cell Type / Lineage (kNN)">
+    </a>  
+
+=== "Species (*kNN*)"
+    <a href="../cbce/cbce_knn_species.html" target="_blank">⬇️ Download Interactive HTML</a>
+    <a href="../cbce/cbce_knn_species.html" target="_blank">
+        <img src="../cbce/cbce_knn_species.png" alt="Species (kNN)">
+    </a>  
 

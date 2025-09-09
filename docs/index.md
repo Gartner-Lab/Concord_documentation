@@ -1,109 +1,113 @@
-# Getting started ![Alt text](images/logo.png){ width=80, height=80 }
+# Getting started with CONCORD ![Alt text](images/logo.png){ width=80, height=80 }
 
 ## Description
 
-Resolving the structure of the gene expression manifold from single cell RNA sequencing (scRNAseq) experiments remains an outstanding challenge, compounded by noise in scRNA-seq data and systematic discrepancies—often referred to as batch effects—across experimental systems and replicates. To address this, we introduce **CONCORD (COntrastive learNing for Cross-dOmain Reconciliation and Discovery)**. The core innovation behind CONCORD is a probabilistic, dataset- and neighborhood-aware sampling strategy that dramatically improves performance of **dimension reduction** and **data integration** on single cell data compared to existing methods. Operated in a one-shot, fully unsupervised manner, CONCORD generates **denoised cell embeddings** that capture key **topological and geometric features** of the underlying biological manifold, revealing fine-grained local detail while preserving a coherent global structure. The resulting high-resolution atlas of cell states and trajectories is coherent across different datasets, such as experimental batches, technologies, and species. Moreover, these embeddings can be interpreted as context-dependent biological programs, facilitating the analysis of the regulatory mechanisms driving cell state transitions and subpopulation heterogeneity. We demonstrate the utility of CONCORD on a range of topological structures and biological contexts, underscoring its potential to yield new insights from both existing and future single-cell datasets.
+Revealing the underlying cell-state landscape from single-cell data requires overcoming the critical obstacles of **batch integration**, **denoising**, and **dimensionality reduction**. We present **CONCORD**, a unified framework that simultaneously addresses these challenges within a single self-supervised model. At its core, CONCORD implements a unified probabilistic sampling strategy that corrects batch effects via dataset-aware sampling and enhances biological resolution through hard-negative sampling. Remarkably, using only a minimalist neural network with a single hidden layer and contrastive learning, CONCORD surpasses state-of-the-art performance without relying on deep architectures, auxiliary losses, or external supervision. It seamlessly integrates data across batches, technologies, and even species to generate high-resolution cell atlases. The resulting latent representations are denoised and biologically meaningful—capturing gene co-expression programs, revealing detailed lineage trajectories, and preserving both local geometric relationships and global topological structures. We demonstrate CONCORD’s broad applicability across diverse datasets, establishing it as a general-purpose framework for learning unified, high-fidelity representations of cellular identity and dynamics.
 
 ---
 
 ## Installation
 
-### 1. Clone the Concord repository and set up environment:
+It is recommended to use [conda](https://conda.io/projects/conda/en/latest/user-guide/install/index.html) to create and set up a clean virtual environment for CONCORD.
 
-```bash
-git clone git@github.com:Gartner-Lab/Concord.git
-```
+### **1. Install PyTorch**
+You must install the correct version of PyTorch based on your system's CUDA setup. Follow the instructions on the [official PyTorch website](https://pytorch.org/get-started/locally/).
 
-It is recommended to use conda (https://conda.io/projects/conda/en/latest/user-guide/install/index.html) to create and set up virtual environment for Concord.
-
-### 2. Install PyTorch:
-
-You must install the correct version of PyTorch based on your system's CUDA setup. Please follow the instructions on the [official PyTorch website](https://pytorch.org/get-started/locally/) to install the appropriate version of PyTorch for CUDA or CPU.
-
-Example (for CPU version):
-```bash
-pip install torch torchvision torchaudio
-```
-
-### 3. Install dependencies:
-
-Navigate to the Concord directory and install the required dependencies:
-
-```bash
-cd path_to_Concord
-pip install -r requirements.txt
-```
-
-### 4. Install Concord:
-Build and install Concord:
-
-```bash
-python setup.py sdist bdist_wheel
-pip install dist/Concord-0.8.0-py3-none-any.whl
-```
-
-### 5. (Optional) Install FAISS for accelerated KNN search (not recommended for Mac):
-
-Install FAISS for fast nearest-neighbor searches for large datasets. Note if you are using Mac, you should turn faiss off by specifying `cur_ccd = ccd.Concord(adata=adata, input_feature=feature_list, use_faiss=False, device=device)` when running Concord, unless you are certain faiss runs with no problem.
-
-- **FAISS with GPU**:
+- **For CPU:**
   ```bash
-  pip install faiss_gpu
+  pip install torch torchvision torchaudio
   ```
-- **FAISS with CPU**:
+- **For CUDA (adjust based on your GPU version):**
   ```bash
-  pip install faiss_cpu
+  pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
   ```
 
-### 6. (Optional) Install optional dependencies:
-
-Concord offers additional functionality through optional dependencies. You can install them via:
+### **2. Install CONCORD (Stable or Development)**
+#### **Stable Version (PyPI)**
 ```bash
-pip install -r requirements_optional.txt
+pip install concord-sc
 ```
 
-### 7. (Optional) Integration with VisCello:
-
-Concord integrates with **VisCello**, a tool for interactive visualization. To explore results interactively, visit [VisCello GitHub](https://github.com/kimpenn/VisCello) and refer to the full documentation for more information.
+#### **Development Version (GitHub)**
+```bash
+pip install git+https://github.com/Gartner-Lab/Concord.git
+```
 
 ---
 
-## Quick Start
+## **Optional Installations**
 
-The ipython notebook of this example can be found at Tutorial: PBMC3k dataset, single batch.
-
-### Run Concord
-Concord seamlessly works with `anndata` objects. Here’s an example run:
-
-```python
-import Concord as ccd
-import scanpy as sc
-import torch
-
-adata = sc.datasets.pbmc3k_processed()
-adata = adata.raw.to_adata()  # Store raw counts in adata.X, by default Concord will run standard total count normalization and log transformation internally
-
-# Set device to cpu or to gpu (if your torch has been set up correctly to use GPU)
-device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-
-# Select top variably expressed/accessible features for analysis (other methods besides seurat_v3 available)
-feature_list = ccd.ul.select_features(adata, n_top_features=5000, flavor='seurat_v3')
-
-# Initialize Concord with an AnnData object, skip input_feature default to all features
-cur_ccd = ccd.Concord(adata=adata, input_feature=feature_list, device=device) 
-# If integrating data across batch, simply add the domain_key argument
-# cur_ccd = ccd.Concord(adata=adata, input_feature=feature_list, domain_key='batch', device=device) 
-
-# Encode data, saving the latent embedding in adata.obsm['Concord']
-cur_ccd.encode_adata(input_layer_key='X_log1p', output_key='Concord')
+### (Recommended) Enable Additional Functionalities
+For **GO enrichment, benchmarking, and R integration**, install:
+```bash
+pip install "concord-sc[optional]"
 ```
 
-### Visualize Results:
+### (Optional) Install FAISS for Accelerated kNN mode
+> **Note:** If using **Mac**, you may need to disable FAISS when running Concord:
+> ```python
+> cur_ccd = ccd.Concord(adata=adata, input_feature=feature_list, use_faiss=False, device=device)
+> ```
 
-We recommend using UMAP to visualize Concord embeddings:
+- **FAISS with GPU:**
+  ```bash
+  pip install faiss-gpu
+  ```
+- **FAISS with CPU:**
+  ```bash
+  pip install faiss-cpu
+  ```
+
+### (Optional) Integration with VisCello
+CONCORD integrates with the **R package VisCello**, a tool for interactive visualization.  
+To explore results interactively, visit [VisCello GitHub](https://github.com/kimpenn/VisCello) for more details.
+
+---
+
+## Getting Started
+
+Concord integrates seamlessly with `anndata` objects. 
+Single-cell datasets, such as 10x Genomics outputs, can easily be loaded into an `annData` object using the [`Scanpy`](https://scanpy.readthedocs.io/) package. If you're using R and have data in a `Seurat` object, you can convert it to `anndata` format by following this [tutorial](https://qinzhu.github.io/Concord_documentation/). 
+In this quick-start example, we'll demonstrate CONCORD using the `pbmc3k` dataset provided by the `scanpy` package.
+
+### Load package and data
 
 ```python
-ccd.ul.run_umap(adata, source_key='Concord', umap_key='Concord_UMAP', n_components=2, n_neighbors=15, min_dist=0.1, metric='euclidean')
+# Load required packages
+import concord as ccd
+import scanpy as sc
+import torch
+# Load and prepare example data
+adata = sc.datasets.pbmc3k_processed()
+adata = adata.raw.to_adata()  # Assume starting from raw counts
+# (Optional) Select top variably expressed/accessible features for analysis (other methods besides seurat_v3 available)
+feature_list = ccd.ul.select_features(adata, n_top_features=2000, flavor='seurat_v3')
+sc.pp.normalize_total(adata) # Normalize counts per cell
+sc.pp.log1p(adata) # Log-transform data
+```
+
+### Run CONCORD:
+
+```python
+# Set device to cpu or to gpu (if your torch has been set up correctly to use GPU), for mac you can use either torch.device('mps') or torch.device('cpu')
+device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+
+# Initialize Concord with an AnnData object, skip input_feature to use all features, set preload_dense=False if your data is very large
+cur_ccd = ccd.Concord(adata=adata, input_feature=feature_list, device=device, preload_dense=True) 
+
+# If integrate across batches, provide domain_key (a column in adata.obs that contains batch label):
+# cur_ccd = ccd.Concord(adata=adata, input_feature=feature_list, domain_key='batch', device=device, preload_dense=True) 
+
+# Encode data, saving the latent embedding in adata.obsm['Concord']
+cur_ccd.fit_transform(output_key='Concord')
+```
+
+### Visualization:
+
+CONCORD latent embeddings can be directly used for downstream analyses such as visualization with UMAP and t-SNE or constructing k-nearest neighbor (kNN) graphs. Unlike PCA, it is important to utilize the full CONCORD latent embedding in downstream analyses, as each dimension is designed to capture meaningful and complementary aspects of the underlying data structure.
+
+```python
+ccd.ul.run_umap(adata, source_key='Concord', result_key='Concord_UMAP', n_components=2, n_neighbors=30, min_dist=0.1, metric='euclidean')
 
 # Plot the UMAP embeddings
 color_by = ['n_genes', 'louvain'] # Choose which variables you want to visualize
@@ -113,24 +117,33 @@ ccd.pl.plot_embedding(
 )
 ```
 
-### 3D Visualization:
-For complex structures, 3D UMAP may provide better insights:
+The latent space produced by CONCORD often capture complex biological structures that may not be fully visualized in 2D projections. We recommend exploring the latent space using a 3D UMAP to more effectively capture and examine the intricacies of the data. For example:
 
 ```python
-ccd.ul.run_umap(adata, source_key='Concord', umap_key='Concord_UMAP_3D', n_components=3, n_neighbors=15, min_dist=0.1, metric='euclidean')
-
+ccd.ul.run_umap(adata, source_key='Concord', result_key='Concord_UMAP_3D', n_components=3, n_neighbors=30, min_dist=0.1, metric='euclidean')
 # Plot the 3D UMAP embeddings
+import plotly.io as pio
+pio.renderers.default = 'notebook'
 col = 'louvain'
-ccd.pl.plot_embedding_3d(
-    adata, basis='Concord_UMAP_3D', color_by=col,
+fig = ccd.pl.plot_embedding_3d(
+    adata, basis='Concord_UMAP_3D', color_by=col, 
     save_path='Concord_UMAP_3D.html',
-    point_size=10, opacity=0.8, width=1500, height=1000
+    point_size=3, opacity=0.8, width=1500, height=1000
 )
 ```
 
 ---
 
+## License
+
+This project is licensed under the **MIT License**.  
+See the [LICENSE](https://github.com/Gartner-Lab/Concord/blob/main/LICENSE.md) file for details.
+
 ## Citation
 
-Concord is currently available on BioRxiv. Please cite the preprint here: [Insert citation link].
+If you use **CONCORD** in your research, please cite the following preprint:
+
+**"Revealing a coherent cell state landscape across single-cell datasets with CONCORD"**  
+[*bioRxiv*, 2025](https://www.biorxiv.org/content/10.1101/2025.03.13.643146v1)
+
 
